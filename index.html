@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cognitive Emotion Analyzer & Decision Maker</title>
+    <title>FixMyChoice - Subconscious Decision Engine</title>
     <style>
         /* SCIENTIFICALLY OPTIMIZED MIND-CALMING THEME */
         :root {
@@ -342,11 +342,12 @@
 <body>
     <div class="app-container">
         
+        <!-- SCREEN 1: INPUT -->
         <section id="screen-1" class="screen active">
             <h1 class="main-title">Cognitive Analyzer</h1>
-            <p class="subtitle">Apne dimaag ko shaant karein aur sahi faisla lein.</p>
+            <p class="subtitle">Quiet your mind and resolve your dilemma.</p>
             <div class="input-group">
-                <input type="text" id="choice-input" placeholder="Apna option yahan likhein (e.g., Book Padhein)..." autocomplete="off">
+                <input type="text" id="choice-input" placeholder="Type an option (e.g., Read a book)..." autocomplete="off">
                 <button id="add-btn">Add Option</button>
             </div>
             <ul id="choices-list"></ul>
@@ -355,9 +356,10 @@
             </div>
         </section>
 
+        <!-- SCREEN 2: PATTERN TEST -->
         <section id="screen-2" class="screen">
-            <h2 class="section-title">Subconscious Pattern Test</h2>
-            <p class="subtitle">Bina soche, abhi is waqt aapki aankhein kis pattern par rukti hain?</p>
+            <h2 class="section-title">Subconscious Pattern</h2>
+            <p class="subtitle">Without overthinking, which visual pattern draws your focus right now?</p>
             <div class="pattern-grid">
                 <div class="pattern-card" id="pattern-order">
                     <div class="visual-wrapper"><div class="breathing-circle"></div></div>
@@ -370,9 +372,10 @@
             </div>
         </section>
 
+        <!-- SCREEN 3: ENERGY CHECK -->
         <section id="screen-3" class="screen">
             <h2 class="section-title">Mental Energy Level</h2>
-            <p class="subtitle">Abhi is waqt aapki dimaagi urja (energy) kaisi mehsus ho rahi hai?</p>
+            <p class="subtitle">How would you describe your current state of mental energy?</p>
             <div class="energy-list">
                 <div class="energy-card" data-energy="Exhausted"><span class="energy-title">Exhausted</span></div>
                 <div class="energy-card" data-energy="Balanced"><span class="energy-title">Balanced</span></div>
@@ -380,19 +383,21 @@
             </div>
         </section>
 
+        <!-- SCREEN 4: 22-SECOND BUFFER -->
         <section id="screen-4" class="screen-therapy">
             <div id="therapy-stage-1" class="therapy-component">
                 <div class="therapy-ring"></div>
                 <p class="therapy-instruction">Breathe in deeply... Gently exhale... release the tension.</p>
             </div>
             <div id="therapy-stage-2" class="therapy-component" style="display: none;">
-                <p class="therapy-instruction-highlight">Clear your thoughts and don't think about anything.</p>
+                <p class="therapy-instruction-highlight">Clear your thoughts and let your focus settle.</p>
             </div>
         </section>
 
+        <!-- SCREEN 5: VERDICT -->
         <section id="screen-5" class="screen">
             <div class="verdict-wrapper">
-                <p class="verdict-intro">Aapke mind ki current state aur situation ko dekhte hue, hamare system ne aapke diye gaye data ko completely analyze kiya hai. Is waqt aapke liye sabse badhiya aur sahi option ye hai:</p>
+                <p class="verdict-intro">Based on your current cognitive state and inputs, our alignment algorithm has resolved your internal conflict. Your optimal path is:</p>
                 <div class="winner-box"><h1 id="winning-option"></h1></div>
                 <p id="verdict-reason" class="verdict-explanation"></p>
                 <button onclick="window.location.reload()" class="glowing-btn reset-btn">Try Again</button>
@@ -509,13 +514,13 @@
 
             if (subconsciousPattern === 'order' && mentalEnergy === 'Exhausted') {
                 targetIndex = 0;
-                reasonText = "Chunki aapka mind is waqt bilkul shaant 'Order' pattern aur thodi thakawat mehsus kar raha hai, isliye humara system aapko is option ke sath aage badhne ki salah deta hai taaki aapko aur sukoon mile.";
+                reasonText = "As your mind gravitates toward structured 'Order' amidst fatigue, the system indicates that this choice will yield the most stabilizing and restorative outcome.";
             } else if (subconsciousPattern === 'chaos' && mentalEnergy === 'Overcharged') {
                 targetIndex = choices.length - 1;
-                reasonText = "Aapka dimaag abhi high active 'Chaos' state aur heavy energy par hai. Kuch bada aur exciting karne ke liye is waqt ye option aapke liye best aur sabse zyada output dene wala rahega.";
+                reasonText = "With highly active cognitive levels matching a dynamic 'Chaos' preference, this direction is optimized to match your current high-intensity output state.";
             } else {
                 targetIndex = Math.floor(choices.length / 2);
-                reasonText = "Aapki subconscious choices aur stable mind levels ko map karte hue, system ne bilkul balanced analysis kiya hai. Is waqt ye decision aapke mental level ko sabse zyada satisfy karega.";
+                reasonText = "By balancing your subconscious pattern selections against baseline energy levels, this decision aligns perfectly with a state of cognitive equilibrium.";
             }
 
             document.getElementById('winning-option').innerText = choices[targetIndex];
@@ -532,5 +537,5 @@
         }
     </script>
 </body>
-  </html>
-  
+    </html>
+                
