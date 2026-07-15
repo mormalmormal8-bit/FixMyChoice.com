@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive Emotion Analyzer & Decision Maker</title>
+    <style>
+        /* SCIENTIFICALLY OPTIMIZED MIND-CALMING THEME */
+        :root {
+            --bg-color: #0B0C10;           /* Dark Calming Space */
+            --text-main: #B3C5D7;          /* Soft Lavender-Blue */
+            --accent-green: #A8D5BA;       /* Muted Sage Green (Stress Relief) */
+            --winner-cyan: #71C9CE;        /* Soft Cyan (Satisfying Focus) */
+            --card-bg: #12141C;
+            --border-color: #1F2330;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 520px;
+            padding: 24px;
+            position: relative;
+        }
+
+        .screen, .screen-therapy {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active, .screen-therapy.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .main-title, .section-title {
+            color: var(--accent-green);
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-main);
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            opacity: 0.85;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        #choice-input {
+            flex: 1;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: #FFFFFF;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #choice-input:focus {
+            border-color: var(--accent-green);
+        }
+
+        #add-btn {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #add-btn:hover {
+            background-color: var(--winner-cyan);
+        }
+
+        #choices-list {
+            list-style: none;
+            margin-bottom: 32px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #choices-list li {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #E2E8F0;
+            font-size: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            color: #EF4444;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+
+        .action-wrapper {
+            text-align: center;
+        }
+
+        .glowing-btn {
+            background-color: var(--winner-cyan);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 14px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(113, 201, 206, 0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .glowing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(113, 201, 206, 0.4);
+        }
+
+        .pattern-grid {
+            display: flex;
+            gap: 16px;
+        }
+
+        .pattern-card {
+            flex: 1;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+
+        .pattern-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .visual-wrapper {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .breathing-circle {
+            width: 48px;
+            height: 48px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            animation: calmPulse 4s infinite ease-in-out;
+        }
+
+        @keyframes calmPulse {
+            0%, 100% { transform: scale(0.85); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 8px rgba(168,213,186,0.4)); }
+        }
+
+        .flickering-particles {
+            width: 48px;
+            height: 48px;
+            border: 2px dashed var(--text-main);
+            border-radius: 50%;
+            animation: rotateChaos 2s infinite linear;
+        }
+
+        @keyframes rotateChaos {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pattern-label {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .energy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .energy-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .energy-card:hover {
+            border-color: var(--winner-cyan);
+            background-color: #171B26;
+        }
+
+        .energy-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .screen-therapy {
+            text-align: center;
+        }
+
+        .therapy-component {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .therapy-ring {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--text-main);
+            border-radius: 50%;
+            margin: 0 auto 36px;
+            animation: calmPulse 3.5s infinite ease-in-out;
+        }
+
+        .therapy-instruction {
+            font-size: 18px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .therapy-instruction-highlight {
+            font-size: 19px;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .verdict-wrapper {
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .verdict-intro {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        #winning-option {
+            color: var(--winner-cyan);
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 12px rgba(113, 201, 206, 0.35);
+        }
+
+        .verdict-explanation {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.85;
+            margin-bottom: 40px;
+        }
+
+        .ad-wrapper {
+            margin-top: 60px;
+            border-top: 1px solid #1F2330;
+            padding-top: 16px;
+            text-align: center;
+        }
+
+        .ad-tag {
+            font-size: 10px;
+            color: #4A5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .adense-placeholder {
+            width: 100%;
+            height: 90px;
+            background-color: #0F111A;
+            border: 1px dashed #2D3748;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4A5568;
+            font-size: 12px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <section id="screen-1" class="screen active">
+            <h1 class="main-title">Cognitive Analyzer</h1>
+            <p class="subtitle">Apne dimaag ko shaant karein aur sahi faisla lein.</p>
+            <div class="input-group">
+                <input type="text" id="choice-input" placeholder="Apna option yahan likhein (e.g., Book Padhein)..." autocomplete="off">
+                <button id="add-btn">Add Option</button>
+            </div>
+            <ul id="choices-list"></ul>
+            <div class="action-wrapper">
+                <button id="start-btn" class="glowing-btn" style="display: none;">Analyze My Mind</button>
+            </div>
+        </section>
+
+        <section id="screen-2" class="screen">
+            <h2 class="section-title">Subconscious Pattern Test</h2>
+            <p class="subtitle">Bina soche, abhi is waqt aapki aankhein kis pattern par rukti hain?</p>
+            <div class="pattern-grid">
+                <div class="pattern-card" id="pattern-order">
+                    <div class="visual-wrapper"><div class="breathing-circle"></div></div>
+                    <span class="pattern-label">Order</span>
+                </div>
+                <div class="pattern-card" id="pattern-chaos">
+                    <div class="visual-wrapper"><div class="flickering-particles"></div></div>
+                    <span class="pattern-label">Chaos</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-3" class="screen">
+            <h2 class="section-title">Mental Energy Level</h2>
+            <p class="subtitle">Abhi is waqt aapki dimaagi urja (energy) kaisi mehsus ho rahi hai?</p>
+            <div class="energy-list">
+                <div class="energy-card" data-energy="Exhausted"><span class="energy-title">Exhausted</span></div>
+                <div class="energy-card" data-energy="Balanced"><span class="energy-title">Balanced</span></div>
+                <div class="energy-card" data-energy="Overcharged"><span class="energy-title">Overcharged</span></div>
+            </div>
+        </section>
+
+        <section id="screen-4" class="screen-therapy">
+            <div id="therapy-stage-1" class="therapy-component">
+                <div class="therapy-ring"></div>
+                <p class="therapy-instruction">Breathe in deeply... Gently exhale... release the tension.</p>
+            </div>
+            <div id="therapy-stage-2" class="therapy-component" style="display: none;">
+                <p class="therapy-instruction-highlight">Clear your thoughts and don't think about anything.</p>
+            </div>
+        </section>
+
+        <section id="screen-5" class="screen">
+            <div class="verdict-wrapper">
+                <p class="verdict-intro">Aapke mind ki current state aur situation ko dekhte hue, hamare system ne aapke diye gaye data ko completely analyze kiya hai. Is waqt aapke liye sabse badhiya aur sahi option ye hai:</p>
+                <div class="winner-box"><h1 id="winning-option"></h1></div>
+                <p id="verdict-reason" class="verdict-explanation"></p>
+                <button onclick="window.location.reload()" class="glowing-btn reset-btn">Try Again</button>
+            </div>
+            <div class="ad-wrapper">
+                <span class="ad-tag">Sponsored Advertisement</span>
+                <div class="adense-placeholder"><p>AdSense Banner Slot</p></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        let choices = [];
+        let subconsciousPattern = '';
+        let mentalEnergy = '';
+
+        const choiceInput = document.getElementById('choice-input');
+        const addBtn = document.getElementById('add-btn');
+        const choicesList = document.getElementById('choices-list');
+        const startBtn = document.getElementById('start-btn');
+
+        addBtn.addEventListener('click', () => {
+            const text = choiceInput.value.trim();
+            if (text) {
+                choices.push(text);
+                choiceInput.value = '';
+                updateUIList();
+            }
+        });
+
+        choiceInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addBtn.click();
+        });
+
+        function updateUIList() {
+            choicesList.innerHTML = '';
+            choices.forEach((choice, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${choice}</span><span class="delete-btn" onclick="removeChoice(${index})">✕</span>`;
+                choicesList.appendChild(li);
+            });
+            startBtn.style.display = choices.length >= 2 ? 'inline-block' : 'none';
+        }
+
+        window.removeChoice = function(index) {
+            choices.splice(index, 1);
+            updateUIList();
+        };
+
+        function changeScreen(currentScreenId, nextScreenId) {
+            const current = document.getElementById(currentScreenId);
+            const next = document.getElementById(nextScreenId);
+            current.classList.remove('active');
+            setTimeout(() => {
+                current.style.display = 'none';
+                next.style.display = 'block';
+                setTimeout(() => { next.classList.add('active'); }, 50);
+            }, 500);
+        }
+
+        startBtn.addEventListener('click', () => { changeScreen('screen-1', 'screen-2'); });
+
+        document.getElementById('pattern-order').addEventListener('click', () => {
+            subconsciousPattern = 'order';
+            changeScreen('screen-2', 'screen-3');
+        });
+
+        document.getElementById('pattern-chaos').addEventListener('click', () => {
+            subconsciousPattern = 'chaos';
+            changeScreen('screen-2', 'screen-3');
+        });
+
+        document.querySelectorAll('.energy-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const target = e.target.closest('.energy-card');
+                mentalEnergy = target.getAttribute('data-energy');
+                changeScreen('screen-3', 'screen-4');
+                executeTherapyPipeline();
+            });
+        });
+
+        function executeTherapyPipeline() {
+            const stage1 = document.getElementById('therapy-stage-1');
+            const stage2 = document.getElementById('therapy-stage-2');
+            const body = document.body;
+
+            setTimeout(() => {
+                stage1.style.opacity = '0';
+                setTimeout(() => {
+                    stage1.style.display = 'none';
+                    stage2.style.display = 'block';
+                }, 400);
+            }, 7000);
+
+            setTimeout(() => {
+                stage2.style.opacity = '0';
+                setTimeout(() => {
+                    stage2.style.display = 'none';
+                    body.style.backgroundColor = '#000000';
+                }, 400);
+            }, 10000);
+
+            setTimeout(() => {
+                body.style.backgroundColor = '#0B0C10';
+                processCognitiveVerdict();
+            }, 22000);
+        }
+
+        function processCognitiveVerdict() {
+            changeScreen('screen-4', 'screen-5');
+            let targetIndex = 0;
+            let reasonText = "";
+
+            if (subconsciousPattern === 'order' && mentalEnergy === 'Exhausted') {
+                targetIndex = 0;
+                reasonText = "Chunki aapka mind is waqt bilkul shaant 'Order' pattern aur thodi thakawat mehsus kar raha hai, isliye humara system aapko is option ke sath aage badhne ki salah deta hai taaki aapko aur sukoon mile.";
+            } else if (subconsciousPattern === 'chaos' && mentalEnergy === 'Overcharged') {
+                targetIndex = choices.length - 1;
+                reasonText = "Aapka dimaag abhi high active 'Chaos' state aur heavy energy par hai. Kuch bada aur exciting karne ke liye is waqt ye option aapke liye best aur sabse zyada output dene wala rahega.";
+            } else {
+                targetIndex = Math.floor(choices.length / 2);
+                reasonText = "Aapki subconscious choices aur stable mind levels ko map karte hue, system ne bilkul balanced analysis kiya hai. Is waqt ye decision aapke mental level ko sabse zyada satisfy karega.";
+            }
+
+            document.getElementById('winning-option').innerText = choices[targetIndex];
+            document.getElementById('verdict-reason').innerText = reasonText;
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 70,
+                    spread: 50,
+                    origin: { y: 0.6 },
+                    colors: ['#A8D5BA', '#71C9CE', '#B3C5D7']
+                });
+            }
+        }
+    </script>
+</body>
+  </html>
+  
