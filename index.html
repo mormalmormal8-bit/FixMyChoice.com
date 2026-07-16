@@ -584,18 +584,4 @@
 
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
-            osc.type = 'triangle'; // Softer, less "harsh" than a square wave
-            osc.frequency.value = selectedFreq; 
-            
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 2); // Fade in
-            
-            osc.connect(gain).connect(audioCtx.destination);
-            osc.start();
-            
-            // Log for your reference
-            console.log("Playing psychological frequency: " + selectedFreq + "Hz");
-        }
-    };
-</script>
+  
